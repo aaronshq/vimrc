@@ -1,6 +1,7 @@
-vimrc
-=====
+#### My vimrc to help me work everywhere
 
-my vimrc file
+### TODO: 
+1. A complete working vimrc config file.
+2. An installation script.
 
-There's no reason you want to know about it. Just for test.
+
