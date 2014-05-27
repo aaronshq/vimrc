@@ -44,6 +44,7 @@ set rtp+=~/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
 "Jump to next window
 nmap <F2> <C-W>w
 imap <F2> <ESC><F2>
+nnoremap <F5> :set invpaste paste?<CR>
 
 " NeoComplCache
 let g:neocomplcache_enable_at_startup=1
@@ -130,7 +131,7 @@ Bundle "garbas/vim-snipmate"
 Bundle "honza/vim-snippets"
 
 Bundle 'https://github.com/ervandew/supertab'
-let g:SuperTabDefaultCompletionType = "<C-X><C-P>"
+"let g:SuperTabDefaultCompletionType = "<C-X><C-P>"
 
 "Bundle 'git://git.wincent.com/command-t.git'
 
