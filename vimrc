@@ -3,6 +3,9 @@ set background=dark
 syntax on
 syntax enable
 set showcmd
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
+set title  " show file in titlebar"
+set smartindent
 
 "INDENT
 set shiftwidth=4 " 设定 << 和 >> 命令移动时的宽度为 4
@@ -10,7 +13,6 @@ set softtabstop=4 " 使得按退格键时可以一次删掉 4 个空格
 set tabstop=4 " 设定 tab 长度为 4
 set expandtab
 	
-set smartindent
 
 "SEARCH
 set ignorecase smartcase " 搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
@@ -18,6 +20,11 @@ set nowrapscan " 禁止在搜索到文件两端时重新搜索
 set incsearch " 输入搜索内容时就显示搜索结果
 set hlsearch " 搜索时高亮显示被找到的文本
 
+
+" highlight current line
+au WinLeave * set nocursorline nocursorcolumn
+au WinEnter * set cursorline cursorcolumn
+set cursorline "cursorcolumn
 
 "POWERLINE
 if ! has('gui_running')
