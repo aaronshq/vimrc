@@ -1,0 +1,137 @@
+set nocompatible                " don't bother with vi compatibility "
+set autoread                    " reload files when changed on disk, i.e. via `git checkout` "
+set shortmess=atI
+set magic                       " For regular expressions turn magic on "
+set title                       " change the terminal's title "
+set nobackup                    " do not keep a backup file "
+set noerrorbells                " don't beep "
+set visualbell t_vb=            " turn off error beep/flash "
+set t_vb=
+set timeoutlen=500
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+set fileformats=unix,dos,mac
+set termencoding=utf-8
+set formatoptions+=m
+set formatoptions+=B
+
+set background=dark
+
+
+set ruler                       " show the current row and column "
+set number                      " show line numbers "
+"set nowrap
+set showcmd                     " display incomplete commands "
+set showmode                    " display current modes "
+set showmatch                   " jump to matches when entering parentheses "
+set matchtime=2                 " tenths of a second to show the matching parenthesis "
+
+set hlsearch                    " highlight searches "
+set incsearch                   " do incremental searching, search as you type "
+set ignorecase                  " ignore case when searching "
+set smartcase                   " no ignorecase if Uppercase char present "
+
+set expandtab                   " expand tabs to spaces "
+set smarttab
+set shiftround
+
+set autoindent smartindent shiftround
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4                " insert mode tab and backspace use 4 spaces "
+
+filetype on
+filetype plugin on
+filetype indent on
+
+syntax on
+
+autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
+autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd BufRead,BufNew *.md,*.mkd,*.markdown set filetype=markdown.mkd
+
+autocmd BufNewFile *.sh,*.py exec \":call AutoSetFileHead()\"
+function! AutoSetFileHead()
+    " .sh "
+    if &filetype == 'sh'
+        call setline(1, "\#!/bin/bash")
+    endif
+
+    " python "
+    if &filetype == 'python'
+        call setline(1, "\#!/usr/bin/env python")
+        call append(1, "\# encoding: utf-8")
+    endif
+
+    normal G
+    normal o
+    normal o
+endfunc
+
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+
+" 实际行跳转
+nnoremap k gk
+nnoremap gk k
+nnoremap j gj
+nnoremap gj j
+
+" 多窗口跳转
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" 同时按下jk或者kj可以代替<Esc>
+inoremap jk <Esc>
+inoremap kj <Esc>
+vnoremap jk <Esc>
+vnoremap kj <Esc>
+
+" 查询到匹配关键字时移到屏幕中间
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
+nnoremap <C-L> :nohl<CR><C-L>
+
+"缩进时不影响已选取的可视化区域
+vnoremap < <gv
+vnoremap > >gv
+
+" 复制到行尾
+map Y y$
+
+" 直接通过;键输入命令
+nnoremap ; :
+
+nnoremap H ^
+nnoremap L $
+
+" 通过 w!! 强制保存
+cmap w!! w !sudo tee >/dev/null %
+
+" 在命令模式下，可以类似bash下的ctrl+a/e 快速跳转
+cnoremap <C-j> <t_kd>
+cnoremap <C-k> <t_ku>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+
+" 在插入模式下非递归映射(为 )<Esc>i"
+"inoremap ( ()<Esc>i
+"inoremap [ []<Esc>i
+"inoremap { {}<Esc>i
+" 但是存在的问题是在后一个括号输入括号时不能自动识别。
+" 可以研究对应的插件的写法。
+
+" normal 模式下z向后删除
+nnoremap z i<BS><Esc>l
