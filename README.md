@@ -1,1 +1,8 @@
-#### My vimrc to help me work everywhere
+# My vimrc file
+
+## vimrc.basic
+no plugin
+
+## vimrc.plugin
+Install plugins with [Plug](https://github.com/junegunn/vim-plug)
+
