@@ -27,7 +27,7 @@ set nocursorline "cursorcolumn
 set hlsearch
 nnoremap <leader>hl :nohlsearch<cr>
 
-set splitbelow
+"set splitbelow
 set splitright
 
 " 查询到匹配关键字时移到屏幕中间
@@ -52,6 +52,8 @@ cmap w!! w !sudo tee >/dev/null %
 
 " 在命令模式下，可以类似bash下的ctrl+a/e 快速跳转
 cnoremap <c-a> <home>
+cnoremap <c-h> <left>
+cnoremap <c-l> <right>
 cnoremap <c-e> <end>
 
 nnoremap <leader>t :terminal<cr>
@@ -86,7 +88,9 @@ set tabstop=4 " 设定 tab 长度为 4
 "set expandtab "tab 变成空格
 
 " Yank to system register
-nnoremap y "*y
+"nnoremap y "*y
+set clipboard=unnamed
+
 
 "------ Plugins Start ------
 
@@ -102,7 +106,6 @@ nnoremap <silent> <C-y> :TagbarToggle<CR>
 
 " Indent Guide
 let g:indent_guides_enable_on_vim_startup = 1
-
 
 call plug#begin('~/.vim/plugged')
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -130,10 +133,13 @@ set autowrite
 " ALE
 let g:ale_completion_enabled = 1
 set omnifunc=ale#completion#OmniFunc
-nnoremap <leader>] :ALEGoToDefinition<CR>
-nnoremap <leader>[ :ALEFindReferences<CR>
+nnoremap <C-]> :ALEGoToDefinition<CR>
+nnoremap <leader>] :ALEFindReferences<CR>
 nnoremap <leader>h :ALEHover<CR>
 nnoremap <leader>x :ALESymbolSearch <C-r><C-w><CR>
 let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+
+let g:SuperTabDefaultCompletionType = "<c-n>"
