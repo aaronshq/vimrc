@@ -27,7 +27,7 @@ set nocursorline "cursorcolumn
 set hlsearch
 nnoremap <leader>hl :nohlsearch<cr>
 
-"set splitbelow
+set splitbelow
 set splitright
 
 " 查询到匹配关键字时移到屏幕中间
@@ -89,7 +89,7 @@ set tabstop=4 " 设定 tab 长度为 4
 
 " Yank to system register
 "nnoremap y "*y
-set clipboard=unnamed
+"set clipboard=unnamed
 
 
 "------ Plugins Start ------
@@ -112,7 +112,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/tagbar'
-Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'Raimondi/delimitMate'
@@ -124,22 +124,29 @@ call plug#end()
 
 "------ Plugins End ------
 
-"------ Golang -------- Start
-autocmd FileType go nmap <leader>b  <Plug>(go-build)
-autocmd FileType go nmap <leader>r  <Plug>(go-run)
-set autowrite
-"------ Golang -------- End
 "
 " ALE
 let g:ale_completion_enabled = 1
 set omnifunc=ale#completion#OmniFunc
 nnoremap <C-]> :ALEGoToDefinition<CR>
-nnoremap <leader>] :ALEFindReferences<CR>
+nnoremap <leader>] :ALEGoToDefinition<CR>
+nnoremap <leader>[ :ALEFindReferences<CR>
 nnoremap <leader>h :ALEHover<CR>
 nnoremap <leader>x :ALESymbolSearch <C-r><C-w><CR>
 let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
+let g:ale_list_vertical = 1
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
+
+"------ Golang -------- Start
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>f  <Plug>(go-fmt)
+nnoremap <C-]> :GoDef<CR>
+nnoremap <leader>] :GoDef<CR>
+nnoremap <leader>[ :GoReferrers<CR>
+set autowrite
+"------ Golang -------- End
