@@ -1,0 +1,183 @@
+filetype plugin indent on
+set nocompatible              " be iMproved
+
+let mapleader = " "
+syntax on
+
+set number
+set relativenumber
+set background=dark
+set colorcolumn=100
+set backspace=2
+set mouse=a
+set mousemodel=popup_setpos
+set mousehide
+set nowrap
+set scrolloff=3 "上下滚动时保留头部和尾部3行，方便阅读上下文
+set autoindent
+set wildmenu
+set wildmode=list:longest
+
+"search
+set ignorecase smartcase " 搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
+set nowrapscan " 禁止在搜索到文件两端时重新搜索
+
+" highlight current line
+set nocursorline "cursorcolumn
+set hlsearch
+nnoremap <leader>hl :nohlsearch<cr>
+
+"set splitbelow
+set splitright
+
+" make c-c same as esc
+imap <c-c> <esc>
+
+nnoremap <leader>p :set invpaste paste?<cr>
+map \\ :q<cr>
+
+"缩进时不影响已选取的可视化区域
+vnoremap < <gv
+vnoremap > >gv
+
+" 通过 w!! 强制保存
+cmap w!! w !sudo tee >/dev/null %
+
+" 在命令模式下，可以类似bash下的ctrl+a/e 快速跳转
+cnoremap <c-a> <home>
+cnoremap <c-h> <left>
+cnoremap <c-l> <right>
+cnoremap <c-e> <end>
+
+nnoremap <leader>t :terminal<cr>
+set termwinsize=15x0
+
+" airline extention.
+let g:airline#extensions#ale#enabled = 1 " 提示消息格式
+
+" uncomment the following to have vim jump to the last position when
+" reopening a file
+if has("autocmd")
+  au bufreadpost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+
+nmap <leader>q :call togglequickfixlist()<cr>
+nmap <leader>l :call togglelocallist()<cr>
+
+"close the preview window
+nmap <leader>z :wincmd z<cr> 
+
+"split navigations
+nnoremap <C-j> :wincmd j<CR> 
+nnoremap <C-k> :wincmd k<CR> 
+nnoremap <C-l> :wincmd l<CR> 
+nnoremap <C-h> :wincmd h<CR> 
+
+"INDENT
+set shiftwidth=4 " 设定 << 和 >> 命令移动时的宽度为 4
+set softtabstop=4 " 使得按退格键时可以一次删掉 4 个空格
+set tabstop=4 " 设定 tab 长度为 4
+"set expandtab "tab 变成空格
+
+" Yank to system register
+"nnoremap y "*y
+"set clipboard=unnamed
+
+
+"------ Plugins Start ------
+
+nnoremap <C-p> :Files<CR>
+nnoremap <C-s> :Rg<CR>
+
+" Nerdtree
+map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:nerdtree") && b:nerdtree.istabtree()) | q | endif
+
+"tagbar.vim
+nnoremap <silent> <C-t> :TagbarToggle<CR>
+
+let g:NERDTreeAutoRefresh=1
+
+
+" Indent Guide
+let g:indent_guides_enable_on_vim_startup = 1
+
+call plug#begin('~/.vim/plugged')
+"Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'preservim/tagbar'
+"Plug 'nathanaelkane/vim-indent-guides'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'Raimondi/delimitMate'
+Plug 'ervandew/supertab'
+Plug 'vim-airline/vim-airline'
+Plug 'milkypostman/vim-togglelist'
+Plug 'dense-analysis/ale'
+call plug#end()
+
+"------ Plugins End ------
+
+"
+" ALE
+let g:ale_completion_enabled = 1
+set omnifunc=ale#completion#OmniFunc
+nnoremap <C-]> :ALEGoToDefinition<CR>
+nnoremap <leader>] :ALEGoToDefinition<CR>
+nnoremap <leader>[ :ALEFindReferences<CR>
+nnoremap <leader>h :ALEHover<CR>
+nnoremap <leader>x :ALESymbolSearch <C-r><C-w><CR>
+nnoremap <leader>a :ALEToggle <CR>
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_list_vertical = 1
+let g:ale_linters_explicit = 1
+let g:ale_linters = {'python': ['pyright', 'pyflakes', 'pylint', 'mypy']}
+
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
+let g:airline#extensions#ale#enabled = 1
+
+"------ Golang -------- Start
+let g:go_highlight_methods = 1                 
+let g:go_highlight_operators = 1    
+let g:go_highlight_build_constraints = 1    
+"let g:go_fmt_autosave = 1
+let g:go_version_warning = 1    
+let g:go_autodetect_gopath = 1    
+let g:go_highlight_types = 1    
+let g:go_highlight_fields = 1    
+let g:go_highlight_functions = 1    
+let g:go_highlight_function_calls = 1                                             
+let g:go_highlight_extra_types = 1                                                               
+let g:go_highlight_generate_tags = 1    
+let g:go_def_mode = 'gopls'
+let g:go_gopls_enabled = 1
+let g:go_guru_enabled = 1
+"let g:go_fmt_experimental = 1    
+let g:go_def_mapping_enabled = 1    
+let g:go_build_tags = '-v'    
+"let g:go_fmt_command = "goimports"                       
+let g:go_list_type = "quickfix"    
+let g:go_def_mapping_enable = 1
+
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>f  <Plug>(go-fmt)
+autocmd FileType go nnoremap <C-]> :GoDef<CR>
+autocmd FileType go nnoremap <C-[> :GoReferrers<CR>
+autocmd FileType go nnoremap <leader>] :GoDef<CR>
+autocmd FileType go nnoremap <leader>[ :GoReferrers<CR>
+autocmd FileType go nnoremap <leader>c :GoCallers<CR>
+"------ Golang -------- End
+
+"------ Python -------- START
+"------ Python -------- END
+
+nnoremap <C-y> :tabp<CR>
+nnoremap <C-u> :tabn<CR>
